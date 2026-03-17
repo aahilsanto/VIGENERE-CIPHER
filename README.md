@@ -37,50 +37,29 @@ STEP-8: Repeat the above steps to generate the entire cipher text.
 
 ## PROGRAM
 
-```
-#include <stdio.h>
-#include <string.h>
+```python
+def vigenere(text, key, mode):
+    result = ""
+    key = key.upper()
+    step = 1 if mode == "encrypt" else -1
+    ki = 0
+    for c in text:
+        if c.isupper():
+            result += chr((ord(c) - ord('A') + step * (ord(key[ki % len(key)]) - ord('A')) + 26) % 26 + ord('A'))
+            ki += 1
+        elif c.islower():
+            result += chr((ord(c) - ord('a') + step * (ord(key[ki % len(key)]) - ord('A')) + 26) % 26 + ord('a'))
+            ki += 1
+        else:
+            result += c
+    return result
 
-// Function to perform Vigenere Encryption
-void vigenereEncrypt(char text[], const char key[]) {
-    int textLen = strlen(text);
-    int keyLen = strlen(key);
-    for (int i = 0; i < textLen; i++) {
-        char c = text[i];
-        if (c >= 'A' && c <= 'Z') {
-            text[i] = ((c - 'A' + (key[i % keyLen] - 'A')) % 26) + 'A';
-        }
-        else if (c >= 'a' && c <= 'z') {
-            text[i] = ((c - 'a' + (key[i % keyLen] - 'A')) % 26) + 'a';
-        }
-    }
-}
-
-// Function to perform Vigenere Decryption
-void vigenereDecrypt(char text[], const char key[]) {
-    int textLen = strlen(text);
-    int keyLen = strlen(key);
-    for (int i = 0; i < textLen; i++) {
-        char c = text[i];
-        if (c >= 'A' && c <= 'Z') {
-            text[i] = ((c - 'A' - (key[i % keyLen] - 'A') + 26) % 26) + 'A';
-        }
-        else if (c >= 'a' && c <= 'z') {
-            text[i] = ((c - 'a' - (key[i % keyLen] - 'A') + 26) % 26) + 'a';
-        }
-    }
-}
-
-int main() {
-    char message[] = "This is a secret message";
-    char key[] = "KEY";
-    vigenereEncrypt(message, key);
-    printf("Encrypted Message: %s\n", message);
-    vigenereDecrypt(message, key);
-    printf("Decrypted Message: %s\n", message);
-
-    return 0;
-}
+message = input("Enter the message to encrypt: ")
+key = input("Enter the Vigenere key: ")
+encrypted = vigenere(message, key, "encrypt")
+print(f"Encrypted Message: {encrypted}")
+decrypted = vigenere(encrypted, key, "decrypt")
+print(f"Decrypted Message: {decrypted}")
 ```
 
 ## OUTPUT
